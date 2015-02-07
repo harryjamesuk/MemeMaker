@@ -41,13 +41,17 @@ public class FileUtilities {
     public static File getFileDirectory(Context context) {
         String storageType = StorageType.PRIVATE_EXTERNAL;  // Change for testing purposes.
         if (storageType.equals(StorageType.INTERNAL)) {
-            if (storageType.equals(StorageType.PRIVATE_EXTERNAL)) {
-                return context.getExternalFilesDir(null);
-            } else {
-                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            }
-        } else {
             return context.getFilesDir();
+        } else {
+            if (isExternalStorageAvailable()) {
+                if (storageType.equals(StorageType.PRIVATE_EXTERNAL)) {
+                    return context.getExternalFilesDir(null);
+                } else {
+                    return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                }
+            } else {
+                return context.getFilesDir();
+            }
         }
     }
 
