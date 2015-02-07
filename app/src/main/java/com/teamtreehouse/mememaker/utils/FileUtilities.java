@@ -21,7 +21,19 @@ import java.io.OutputStream;
 public class FileUtilities {
 
     public static void saveAssetImage(Context context, String assetName) {
-        
+        File fileDirectory = context.getFilesDir();
+        File fileToWrite = new File(fileDirectory, assetName);
+
+        AssetManager assetManager = context.getAssets();
+        try {
+            InputStream in = assetManager.open(assetName);
+            FileOutputStream out = new FileOutputStream(fileToWrite);
+
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Uri saveImageForSharing(Context context, Bitmap bitmap,  String assetName) {
