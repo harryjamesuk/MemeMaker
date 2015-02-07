@@ -46,6 +46,22 @@ public class FileUtilities {
         }
     }
 
+    public static File[] listFiles (Context context) {
+        File fileDirectory = context.getFilesDir();
+        File[] filteredFiles = fileDirectory.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                if (file.getAbsolutePath().contains(".jpg")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        return filteredFiles;
+    }
+
     public static Uri saveImageForSharing(Context context, Bitmap bitmap,  String assetName) {
         File fileToWrite = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), assetName);
 
