@@ -39,7 +39,24 @@ public class FileUtilities {
     }
 
     public static File getFileDirectory(Context context) {
-        return context.getFilesDir();
+        String storageType = StorageType.PRIVATE_EXTERNAL;  // Change for testing purposes.
+        if (storageType.equals(StorageType.INTERNAL)) {
+            if (storageType.equals(StorageType.PRIVATE_EXTERNAL)) {
+                return context.getExternalFilesDir(null);
+            } else {
+                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            }
+        } else {
+            return context.getFilesDir();
+        }
+    }
+
+    public static boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
     }
 
     private static void copyFile(InputStream in, OutputStream out) throws IOException {
