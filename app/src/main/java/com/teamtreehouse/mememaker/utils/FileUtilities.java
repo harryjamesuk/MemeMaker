@@ -29,10 +29,20 @@ public class FileUtilities {
             InputStream in = assetManager.open(assetName);
             FileOutputStream out = new FileOutputStream(fileToWrite);
 
+            copyFile(in, out);
+
             in.close();
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void copyFile(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
         }
     }
 
