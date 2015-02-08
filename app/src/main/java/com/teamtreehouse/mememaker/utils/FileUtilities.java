@@ -39,7 +39,8 @@ public class FileUtilities {
     }
 
     public static File getFileDirectory(Context context) {
-        String storageType = StorageType.PRIVATE_EXTERNAL;  // Change for testing purposes.
+        MemeMakerApplicationSettings settings = new MemeMakerApplicationSettings(context);
+        String storageType = settings.getStoragePreference();
         if (storageType.equals(StorageType.INTERNAL)) {
             return context.getFilesDir();
         } else {
