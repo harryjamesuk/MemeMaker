@@ -22,5 +22,6 @@ public class MemeDatasource {
 
     public MemeDatasource(Context context) {
         mContext = context;
+        mMemeSqlLiteHelper = new MemeSQLiteHelper(context);
     }
 }
