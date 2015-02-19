@@ -66,3 +66,4 @@ app/app.iml
 .idea/misc.xml
 app/manifest-merger-release-report.txt
 *.DS_Store
+*.iml
