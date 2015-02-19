@@ -93,6 +93,41 @@ public class MemeDatasource {
         database.close();
     }
 
+    public void update(Meme meme) {
+        SQLiteDatabase database = open();
+        database.beginTransaction();
+
+        ContentValues updateMemeValues = new ContentValues();
+        updateMemeValues.put(MemeSQLiteHelper.COLUMN_MEME_NAME, meme.getName());
+        database.update(MemeSQLiteHelper.MEMES_TABLE, updateMemeValues,
+                String.format("%s=%d", BaseColumns._ID, meme.getId()), null);
+        for (MemeAnnotation annotation : meme.getAnnotations()) {
+            ContentValues updateAnnotations = new ContentValues();
+            updateAnnotations.put(MemeSQLiteHelper.COLUMN_ANNOTATION_TITLE,
+                    annotation.getTitle());
+            updateAnnotations.put(MemeSQLiteHelper.COLUMN_ANNOTATION_X,
+                    annotation.getLocationX());
+            updateAnnotations.put(MemeSQLiteHelper.COLUMN_ANNOTATION_Y,
+                    annotation.getLocationY());
+            updateAnnotations.put(MemeSQLiteHelper.COLUMN_FOREIGN_KEY_MEME,
+                    meme.getId());
+            updateAnnotations.put(MemeSQLiteHelper.COLUMN_ANNOTATION_COLOR,
+                    annotation.getColor());
+
+            if(annotation.hasBeenSaved()) {
+                database.update(MemeSQLiteHelper.ANNOTATIONS_TABLE,
+                        updateAnnotations, String.format("%s=%d", BaseColumns._ID,
+                                annotation.getId()), null);
+            } else {
+                database.insert(MemeSQLiteHelper.ANNOTATIONS_TABLE, null,
+                        updateAnnotations);
+            }
+        }
+        database.setTransactionSuccessful();
+        database.endTransaction();
+        close(database);
+    }
+
     private int getIntFromColumnName(Cursor cursor, String columnName) {
         int columnIndex = cursor.getColumnIndex(columnName);
         return cursor.getInt(columnIndex);
