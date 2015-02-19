@@ -72,7 +72,7 @@ public class MemeDatasource {
             ArrayList<MemeAnnotation> annotations = new ArrayList<MemeAnnotation>();
             Cursor cursor = database.rawQuery(
                     "SELECT * FROM " + MemeSQLiteHelper.ANNOTATIONS_TABLE +
-                            " WHERE MEME ID = " + meme.getId(), null);
+                            " WHERE MEME_ID = " + meme.getId(), null);
 
             if (cursor.moveToFirst()) {
                 do {
