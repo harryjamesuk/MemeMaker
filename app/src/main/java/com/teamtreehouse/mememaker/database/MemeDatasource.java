@@ -23,8 +23,6 @@ public class MemeDatasource {
     public MemeDatasource(Context context) {
         mContext = context;
         mMemeSqlLiteHelper = new MemeSQLiteHelper(context);
-        SQLiteDatabase database = mMemeSqlLiteHelper.getReadableDatabase();
-        database.close();
     }
 
     private SQLiteDatabase open() {
@@ -33,6 +31,48 @@ public class MemeDatasource {
 
     private void close(SQLiteDatabase database) {
         database.close();
+    }
+
+    public ArrayList<Meme> read() {
+        return null;
+    }
+
+    public ArrayList<Meme> readMemes() {
+        SQLiteDatabase database = open();
+
+        Cursor cursor = database.query(MemeSQLiteHelper.MEMES_TABLE,
+                new String[] {MemeSQLiteHelper.COLUMN_MEME_NAME,
+                BaseColumns._ID, MemeSQLiteHelper.COLUMN_MEME_ASSET},
+                null,   // Selection
+                null,   // Selection args
+                null,   // Group by
+                null,   // Having
+                null);  // Order
+
+        ArrayList<Meme> memes = new ArrayList<Meme>();
+        if (cursor.moveToFirst()) {
+            do {
+                Meme meme = new Meme(
+                        getIntFromColumnName(cursor, BaseColumns._ID),
+                        getStringFromColumnName(cursor, MemeSQLiteHelper.COLUMN_MEME_ASSET),
+                        getStringFromColumnName(cursor, MemeSQLiteHelper.COLUMN_MEME_NAME),
+                        null);
+                memes.add(meme);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        close(database);
+        return memes;
+        }
+
+    private int getIntFromColumnName(Cursor cursor, String columnName) {
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return cursor.getInt(columnIndex);
+    }
+
+    private String getStringFromColumnName(Cursor cursor, String columnName) {
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return cursor.getString(columnIndex);
     }
 
     public void create(Meme meme) {
