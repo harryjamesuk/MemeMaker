@@ -63,7 +63,7 @@ public class MemeDatasource {
         cursor.close();
         close(database);
         return memes;
-        }
+    }
 
     private int getIntFromColumnName(Cursor cursor, String columnName) {
         int columnIndex = cursor.getColumnIndex(columnName);
