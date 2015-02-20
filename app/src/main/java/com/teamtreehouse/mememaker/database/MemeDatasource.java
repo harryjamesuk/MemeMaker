@@ -64,7 +64,7 @@ public class MemeDatasource {
                 null,   // Selection args
                 null,   // Group by
                 null,   // Having
-                null);  // Order
+                MemeSQLiteHelper.COLUMN_MEME_CREATE_DATE + " DESC");  // Order
 
         ArrayList<Meme> memes = new ArrayList<Meme>();
         if (cursor.moveToFirst()) {
@@ -160,6 +160,7 @@ public class MemeDatasource {
         ContentValues memeValues = new ContentValues();
         memeValues.put(MemeSQLiteHelper.COLUMN_MEME_NAME, meme.getName());
         memeValues.put(MemeSQLiteHelper.COLUMN_MEME_ASSET, meme.getAssetLocation());
+        memeValues.put(MemeSQLiteHelper.COLUMN_MEME_CREATE_DATE, new Date().getTime());
         long memeID = database.insert(MemeSQLiteHelper.MEMES_TABLE, null, memeValues);
 
         for (MemeAnnotation annotation : meme.getAnnotations()) {
