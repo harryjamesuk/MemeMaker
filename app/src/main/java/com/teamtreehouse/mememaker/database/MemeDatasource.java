@@ -10,7 +10,6 @@ import com.teamtreehouse.mememaker.models.Meme;
 import com.teamtreehouse.mememaker.models.MemeAnnotation;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Evan Anger on 8/17/14.
@@ -60,7 +59,8 @@ public class MemeDatasource {
 
         Cursor cursor = database.query(MemeSQLiteHelper.MEMES_TABLE,
                 new String[] {MemeSQLiteHelper.COLUMN_MEME_NAME,
-                BaseColumns._ID, MemeSQLiteHelper.COLUMN_MEME_ASSET},
+                BaseColumns._ID, MemeSQLiteHelper.COLUMN_MEME_ASSET,
+                MemeSQLiteHelper.COLUMN_MEME_CREATE_DATE},
                 null,   // Selection
                 null,   // Selection args
                 null,   // Group by
@@ -74,7 +74,8 @@ public class MemeDatasource {
                         getIntFromColumnName(cursor, BaseColumns._ID),
                         getStringFromColumnName(cursor, MemeSQLiteHelper.COLUMN_MEME_ASSET),
                         getStringFromColumnName(cursor, MemeSQLiteHelper.COLUMN_MEME_NAME),
-                        null);
+                        null,
+                        getIntFromColumnName(cursor, MemeSQLiteHelper.COLUMN_MEME_CREATE_DATE));
                 memes.add(meme);
             } while (cursor.moveToNext());
         }
@@ -161,7 +162,8 @@ public class MemeDatasource {
         ContentValues memeValues = new ContentValues();
         memeValues.put(MemeSQLiteHelper.COLUMN_MEME_NAME, meme.getName());
         memeValues.put(MemeSQLiteHelper.COLUMN_MEME_ASSET, meme.getAssetLocation());
-        memeValues.put(MemeSQLiteHelper.COLUMN_MEME_CREATE_DATE, new Date().getTime());
+        meme.setTime();
+        memeValues.put(MemeSQLiteHelper.COLUMN_MEME_CREATE_DATE, meme.getTime());
         long memeID = database.insert(MemeSQLiteHelper.MEMES_TABLE, null, memeValues);
 
         for (MemeAnnotation annotation : meme.getAnnotations()) {

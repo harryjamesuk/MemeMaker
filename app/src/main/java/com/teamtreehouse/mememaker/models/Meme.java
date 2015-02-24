@@ -7,6 +7,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Evan Anger on 8/17/14.
@@ -16,12 +17,14 @@ public class Meme implements Serializable {
     private String mAssetLocation;
     private ArrayList<MemeAnnotation> mAnnotations;
     private String mName;
+    private int mCreateDate;
 
-    public Meme(int id, String assetLocation, String name, ArrayList<MemeAnnotation> annotations) {
+    public Meme(int id, String assetLocation, String name, ArrayList<MemeAnnotation> annotations, int createDate) {
         mId = id;
         mAssetLocation = assetLocation;
         mAnnotations = annotations;
         mName = name;
+        mCreateDate = createDate;
     }
 
     public int getId() { return mId; }
@@ -46,6 +49,14 @@ public class Meme implements Serializable {
     }
 
     public void setName(String name) { mName = name; }
+
+    public void setTime() {
+        mCreateDate = (int) new Date().getTime();
+    }
+
+    public int getTime() {
+        return mCreateDate;
+    }
 
     public Bitmap getBitmap() {
         File file = new File(mAssetLocation);

@@ -24,7 +24,7 @@ public class MemeSQLiteHelper extends SQLiteOpenHelper {
             COLUMN_MEME_NAME + " TEXT," +
             COLUMN_MEME_CREATE_DATE + " INTEGER)";
     private static final String ALTER_ADD_CREATE_DATE = "ALTER TABLE " + MEMES_TABLE +
-            " ADD COLUMN" + COLUMN_MEME_CREATE_DATE + " INTEGER";
+            " ADD COLUMN " + COLUMN_MEME_CREATE_DATE + " INTEGER";
 
     //Meme Table Annotations functionality
     public static final String ANNOTATIONS_TABLE = "ANNOTATIONS";
