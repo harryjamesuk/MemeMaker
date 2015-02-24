@@ -46,6 +46,7 @@ public class MemeDatasource {
 
         database.setTransactionSuccessful();
         database.endTransaction();
+        database.close();
     }
 
     public ArrayList<Meme> read() {
@@ -105,7 +106,7 @@ public class MemeDatasource {
             meme.setAnnotations(annotations);
             cursor.close();
         }
-        database.close();
+        close(database);
     }
 
     public void update(Meme meme) {
